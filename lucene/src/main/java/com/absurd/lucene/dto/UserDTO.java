@@ -21,6 +21,16 @@ public class UserDTO implements Serializable {
     private Integer id;
     @SearchableProperty(name="username",store = Store.STORED,index = Index.ANALYZER)
     private String username;
+    @SearchableProperty(name="group",store = Store.STORED,index = Index.ANALYZER)
+    private GroupDTO groupDTO;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(Integer id, String username) {
+        this.id = id;
+        this.username = username;
+    }
 
     public Integer getId() {
         return id;
@@ -38,11 +48,20 @@ public class UserDTO implements Serializable {
         this.username = username;
     }
 
+    public GroupDTO getGroupDTO() {
+        return groupDTO;
+    }
+
+    public void setGroupDTO(GroupDTO groupDTO) {
+        this.groupDTO = groupDTO;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
+                ", groupDTO=" + groupDTO +
                 '}';
     }
 }
