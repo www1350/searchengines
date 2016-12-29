@@ -168,6 +168,7 @@ public class SimpleTest {
             Document hitDoc = searcher.doc(hits[i].doc);
             logger.info(hitDoc.toString());
            logger.info(hitDoc.get("path"));
+            logger.info(hitDoc.get("modified"));
         }
     }
 }
