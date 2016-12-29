@@ -66,7 +66,7 @@ public class LuceneFactory {
     private static LuceneFactory factory;
     private static String indexPath;
     private static IndexWriterConfig.OpenMode openMode;
-
+    private static IndexWriterConfig indexWriterConfig;
     private LuceneFactory() {
     }
 
@@ -96,6 +96,9 @@ public class LuceneFactory {
                 }else{
                     openMode = IndexWriterConfig.OpenMode.CREATE;
                 }
+                Analyzer analyzer = new StandardAnalyzer();
+                indexWriterConfig = new IndexWriterConfig(analyzer);
+                indexWriterConfig.setOpenMode(openMode);
 
             } catch(FileNotFoundException e) {
                 throw new RuntimeException("未找到search.properties配置文件",e);
@@ -116,11 +119,8 @@ public class LuceneFactory {
         String alias = searchable.alias();
         try {
             Directory dir = FSDirectory.open(Paths.get(indexPath + File.separator + alias));
-            Analyzer analyzer = new StandardAnalyzer();
-            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-            iwc.setOpenMode(openMode);
 //            iwc.setRAMBufferSizeMB(256.0);
-            IndexWriter writer = new IndexWriter(dir, iwc);
+            IndexWriter writer = new IndexWriter(dir, indexWriterConfig);
             indexSingle(clazz, writer, object);
             writer.forceMerge(1);
             writer.close();
@@ -144,11 +144,7 @@ public class LuceneFactory {
         String alias = searchable.alias();
         try {
             Directory dir = FSDirectory.open(Paths.get(indexPath + File.separator + alias));
-            Analyzer analyzer = new StandardAnalyzer();
-            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-            iwc.setOpenMode(openMode);
-//            iwc.setRAMBufferSizeMB(256.0);
-            IndexWriter writer = new IndexWriter(dir, iwc);
+            IndexWriter writer = new IndexWriter(dir, indexWriterConfig);
             for (T object : collection) {
                 indexSingle(clazz, writer, object);
             }
