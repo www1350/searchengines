@@ -53,4 +53,23 @@ public class GroupDTO implements Serializable{
                 ", groupName='" + groupName + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupDTO groupDTO = (GroupDTO) o;
+
+        if (id != null ? !id.equals(groupDTO.id) : groupDTO.id != null) return false;
+        return groupName != null ? groupName.equals(groupDTO.groupName) : groupDTO.groupName == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
+        return result;
+    }
 }

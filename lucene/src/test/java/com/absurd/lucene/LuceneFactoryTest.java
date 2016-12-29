@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author <a href="mailto:www_1350@163.com">王文伟</a>
  * @Title: searchengines
@@ -33,6 +35,8 @@ public class LuceneFactoryTest {
                 .newInstance();
         long   elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","newInstance", elapsedTime);
+
+
         startTime.set(System.currentTimeMillis());
         LuceneFactory
                 .newInstance()
@@ -40,40 +44,52 @@ public class LuceneFactoryTest {
         UserDTO u2 =  LuceneFactory.newInstance().searchById(22L,UserDTO.class);
          elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","index", elapsedTime);
-        logger.info(u2.toString());
+        assertEquals(u2,userDTO);
+
+
         startTime.set(System.currentTimeMillis());
         LuceneFactory
                 .newInstance()
                 .index(new GroupDTO(12L,"第一组"),GroupDTO.class);
         elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","index", elapsedTime);
+
+
         startTime.set(System.currentTimeMillis());
         GroupDTO groupDTO =  LuceneFactory.newInstance().searchById(12L,GroupDTO.class);
         elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","search", elapsedTime);
-        logger.info(groupDTO.toString());
+        assertEquals(groupDTO,new GroupDTO(12L,"第一组") );
 
     }
     @Test
     public void indexMul(){
      List<UserDTO> list =   Arrays.asList(new UserDTO(11,"我饿11访问时"),new UserDTO(12,"我饿21访问时"),new UserDTO(13,"我饿访323问时"),new UserDTO(14,"我饿434访问时"),new UserDTO(15,"我饿5454访问时"));
+
         startTime.set(System.currentTimeMillis());
         LuceneFactory
                 .newInstance()
                 .index(list,UserDTO.class);
         long elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","index", elapsedTime);
+
+
         startTime.set(System.currentTimeMillis());
         UserDTO u2 =  LuceneFactory.newInstance().searchById(12L,UserDTO.class);
+        assertEquals(u2,new UserDTO(12,"我饿21访问时"));
         elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","search", elapsedTime);
-        logger.info(u2.toString());
+
 
         startTime.set(System.currentTimeMillis());
         UserDTO u3 =  LuceneFactory.newInstance().searchById(22L,UserDTO.class);
         elapsedTime = System.currentTimeMillis() - startTime.get();
         logger.debug("{} take {} ms","search", elapsedTime);
-        logger.info(u3.toString());
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(22);
+        userDTO.setUsername("fsdfsa");
+        userDTO.setGroupDTO(new GroupDTO(12L,"第二组"));
+        assertEquals(u3,userDTO);
     }
 
 }

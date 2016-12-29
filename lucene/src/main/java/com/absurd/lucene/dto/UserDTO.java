@@ -64,4 +64,26 @@ public class UserDTO implements Serializable {
                 ", groupDTO=" + groupDTO +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDTO userDTO = (UserDTO) o;
+
+        if (id != null ? !id.equals(userDTO.id) : userDTO.id != null) return false;
+        if (username != null ? !username.equals(userDTO.username) : userDTO.username != null)
+            return false;
+        return groupDTO != null ? groupDTO.equals(userDTO.groupDTO) : userDTO.groupDTO == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (groupDTO != null ? groupDTO.hashCode() : 0);
+        return result;
+    }
 }
